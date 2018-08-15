@@ -30,7 +30,7 @@ export default class ReactSimpleSketch extends React.Component<IReactSimpleSketc
     interval: NodeJS.Timer | undefined;
 
 
-    switchEventToTool = (e: MouseEvent) => {
+    switchEventToTool = (e: MouseEvent | TouchEvent) => {
         switch(this.props.tool) {
             case "line":
                 this.lineTool.draw(e);
@@ -49,7 +49,10 @@ export default class ReactSimpleSketch extends React.Component<IReactSimpleSketc
         if (this.canvas) {
             this.canvas.addEventListener('mousedown', this.switchEventToTool);
             this.canvas.addEventListener('mousemove', this.switchEventToTool);
-            this.canvas.addEventListener('mouseup', this.switchEventToTool);          
+            this.canvas.addEventListener('mouseup', this.switchEventToTool); 
+            this.canvas.addEventListener('touchstart', this.switchEventToTool);
+            this.canvas.addEventListener('touchend', this.switchEventToTool);
+            this.canvas.addEventListener('touchmove', this.switchEventToTool);          
     
             this.interval = setInterval(this.drawObjects, 1000/30);
         }
