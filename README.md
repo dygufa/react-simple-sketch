@@ -1,7 +1,7 @@
 # react-simple-sketch
 [![npm version](https://img.shields.io/npm/v/react-simple-sketch.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-sketch)
 
-Simple sketch board that allows to draw lines, rectangles and paths.
+Simple sketch board that allows drawing lines, rectangles and paths.
 
 ### [**Check the DEMO**](https://dygufa.com/react-simple-sketch/example/dist/)
 
