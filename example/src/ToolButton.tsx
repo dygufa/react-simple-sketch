@@ -15,7 +15,7 @@ class Button extends React.PureComponent<IButtonProps> {
                 className={this.props.className || undefined}
                 onClick={() => this.props.onClick(this.props.tool)}
             >
-                {this.props.children}
+                <img width="24" height="24" src={require(`./icons/${this.props.tool}.svg`)}/>
             </button>
         );
     }
@@ -23,13 +23,16 @@ class Button extends React.PureComponent<IButtonProps> {
 };
 
 export const ToolButton = styled(Button)`
-    border: 2px solid #000;
-    width: 48px;
-    height: 48px;
+    border: ${props => props.currentTool === props.tool ? "4px solid #000" : "2px solid #000"};
+    width: ${props => props.currentTool === props.tool ? "48px" : "50px"};
+    height: ${props => props.currentTool === props.tool ? "48px" : "50px"};
     margin-right: 14px;
-    margin-bottom: 14px;
     border-radius: 50%;
     color: none;
     background: none;
     outline: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 `;

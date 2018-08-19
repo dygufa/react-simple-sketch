@@ -25,11 +25,15 @@ const ToolsBox = styled.div`
     margin-left: 20px;
 `;
 
+const ToolBox = styled.div`
+    margin-bottom: 30px;
+`;
+
 class App extends React.Component<IAppProps, IAppState> {
     state = {
-        tool: "line",
+        tool: "path",
         color: "#f44336",
-        lineWidth: 1,
+        lineWidth: 4,
     }
 
     onToolChange = (value: string) => {
@@ -69,21 +73,27 @@ class App extends React.Component<IAppProps, IAppState> {
                     />
 
                     <ToolsBox>
-                        <ToolButton onClick={this.onToolChange} tool="rect" currentTool={this.state.tool}/>>
-                        <ToolButton onClick={this.onToolChange} tool="line" currentTool={this.state.tool}/>
-                        <ToolButton onClick={this.onToolChange} tool="path" currentTool={this.state.tool}/>    
+                        <ToolBox>
+                            <ToolButton onClick={this.onToolChange} tool="path" currentTool={this.state.tool}/>    
+                            <ToolButton onClick={this.onToolChange} tool="line" currentTool={this.state.tool}/>
+                            <ToolButton onClick={this.onToolChange} tool="rect" currentTool={this.state.tool}/>
+                        </ToolBox>                        
 
-                        <Slider 
-                            value={this.state.lineWidth} 
-                            onChange={this.onLineWidthChange} 
-                            min={1} 
-                            max={10}
-                            railStyle={{ background: "#ccc" }}
-                            trackStyle={[{ background: "#000" }]}
-                            handleStyle={[{ borderColor: "#000", boxShadow: "none" }]}
-                        />
-
-                        <CirclePicker color={this.state.color} onChange={this.onColorChange} />  
+                        <ToolBox>
+                            <Slider 
+                                value={this.state.lineWidth} 
+                                onChange={this.onLineWidthChange} 
+                                min={1} 
+                                max={10}
+                                railStyle={{ background: "#ccc" }}
+                                trackStyle={[{ background: "#000" }]}
+                                handleStyle={[{ borderColor: "#000", boxShadow: "none" }]}
+                            />
+                        </ToolBox>
+                        
+                        <ToolBox>
+                            <CirclePicker color={this.state.color} onChange={this.onColorChange} />  
+                        </ToolBox>                        
                     </ToolsBox>
                 </Container>   
             </div>            
