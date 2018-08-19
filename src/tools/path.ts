@@ -14,7 +14,7 @@ export class PathTool {
         this.objects = objects;
     }
 
-    draw = (e: MouseEvent | TouchEvent) => {   
+    draw = (e: MouseEvent | TouchEvent, lineWidth: number, lineColor: string) => {   
         const { x, y } = coordinates(e) || { x: 0, y: 0};
 
         if (e.type === "mousedown" || e.type === "touchstart") {
@@ -22,7 +22,7 @@ export class PathTool {
             this.x0 = x;
             this.y0 = y;
             
-            this.newPath = new PathShape(this.x0, this.y0);
+            this.newPath = new PathShape(this.x0, this.y0, lineWidth, lineColor);
             this.objects.push(this.newPath);
         };
 

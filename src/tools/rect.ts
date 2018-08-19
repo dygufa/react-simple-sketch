@@ -14,7 +14,7 @@ export class RectTool {
         this.objects = objects;
     }
 
-    draw = (e: MouseEvent | TouchEvent) => {   
+    draw = (e: MouseEvent | TouchEvent, lineWidth: number, lineColor: string) => {   
         const { x, y } = coordinates(e) || { x: 0, y: 0};
 
         if (e.type === "mousedown" || e.type === "touchstart") {
@@ -22,7 +22,7 @@ export class RectTool {
             this.x0 = x;
             this.y0 = y;
             
-            this.newRect = new RectShape(this.x0, this.y0, this.x0, this.y0);
+            this.newRect = new RectShape(this.x0, this.y0, this.x0, this.y0, lineWidth, lineColor);
             this.objects.push(this.newRect);
         };
 

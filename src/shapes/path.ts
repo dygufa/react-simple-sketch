@@ -5,8 +5,12 @@ export class PathShape {
         x: number;
         y: number;   
     }> = [];
+    private lineWidth!: number;
+    private lineColor!: string;
 
-    constructor(x: number, y: number) {
+    constructor(x: number, y: number, lineWidth: number, lineColor: string) {
+        this.lineColor = lineColor;
+        this.lineWidth = lineWidth;
         this.add(x, y);
     }
 
@@ -20,6 +24,9 @@ export class PathShape {
     draw(context: CanvasRenderingContext2D) {
         context.beginPath();
         const [first, ...rest] = this.path;
+
+        context.lineWidth = this.lineWidth;
+        context.strokeStyle = this.lineColor;
 
         context.moveTo(first.x, first.y);
         for (const point of rest) {

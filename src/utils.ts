@@ -1,3 +1,8 @@
+export const DEFAULT_WIDTH = 490;
+export const DEFAULT_HEIGHT = 245;
+export const DEFAULT_LINE_WIDTH = 1;
+export const DEFAULT_LINE_COLOR = "#F00";
+
 export function coordinates(e: MouseEvent | TouchEvent) {
     let x = 0, y = 0;
 

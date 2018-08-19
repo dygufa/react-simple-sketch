@@ -9,12 +9,17 @@ import { RectTool } from "./tools/rect";
 import { PathShape } from "./shapes/path";
 import { PathTool } from "./tools/path";
 
+import { DEFAULT_HEIGHT, DEFAULT_WIDTH, DEFAULT_LINE_WIDTH, DEFAULT_LINE_COLOR } from "./utils";
+
 type Object = LineShape | RectShape | PathShape;
 
 export interface IReactSimpleSketchProps {
     width?: number;
     height?: number;
     tool: string;
+    lineWidth?: number;
+    lineColor?: string;
+    style?: React.CSSProperties;
 }
 
 export interface IReactSimpleSketchState {
@@ -31,21 +36,23 @@ export default class ReactSimpleSketch extends React.Component<IReactSimpleSketc
 
 
     switchEventToTool = (e: MouseEvent | TouchEvent) => {
+        const lineWidth = this.props.lineWidth || DEFAULT_LINE_WIDTH;
+        const lineColor = this.props.lineColor || DEFAULT_LINE_COLOR;
+
         switch(this.props.tool) {
             case "line":
-                this.lineTool.draw(e);
+                this.lineTool.draw(e, lineWidth, lineColor);
                 break;
             case "rect":
-                this.rectTool.draw(e);
+                this.rectTool.draw(e, lineWidth, lineColor);
                 break;
             case "path":
-                this.pathTool.draw(e);
+                this.pathTool.draw(e, lineWidth, lineColor);
                 break;
         }       
     }
 
     componentDidMount() {
-        console.log("aaa");
         if (this.canvas) {
             this.canvas.addEventListener('mousedown', this.switchEventToTool);
             this.canvas.addEventListener('mousemove', this.switchEventToTool);
@@ -55,8 +62,7 @@ export default class ReactSimpleSketch extends React.Component<IReactSimpleSketc
             this.canvas.addEventListener('touchmove', this.switchEventToTool);          
     
             this.interval = setInterval(this.drawObjects, 1000/30);
-        }
-       
+        }       
     }
 
     componentWillUnmount() {
@@ -67,7 +73,8 @@ export default class ReactSimpleSketch extends React.Component<IReactSimpleSketc
         if (!(this.context instanceof CanvasRenderingContext2D)) {
             return;
         }
-        this.context.clearRect(0, 0, 490, 245);
+        this.context.clearRect(0, 0, (this.props.width || DEFAULT_WIDTH), (this.props.height || DEFAULT_HEIGHT));
+
         for (let object of this.objects) {
             object.draw(this.context!);
         }
@@ -85,11 +92,9 @@ export default class ReactSimpleSketch extends React.Component<IReactSimpleSketc
         return (
             <canvas 
                 ref={(c) => this.defineCanvas(c)}
-                height={this.props.height || 245} 
-                width={this.props.width || 490}
-                style={{
-                    border: "1px solid #000"
-                }}
+                height={this.props.height || DEFAULT_HEIGHT} 
+                width={this.props.width || DEFAULT_WIDTH}
+                style={this.props.style || {}}
             />
         );
     }
