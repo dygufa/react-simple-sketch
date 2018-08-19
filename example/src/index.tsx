@@ -1,6 +1,11 @@
 import { render } from "react-dom";
 import * as React from "react";
 import SimpleSketch from "react-simple-sketch";
+import { CirclePicker, ColorResult } from "react-color";
+import { ToolButton } from "./ToolButton";
+import styled from "styled-components";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
 
 interface IAppProps {
 
@@ -8,31 +13,23 @@ interface IAppProps {
 
 interface IAppState {
     tool: string
+    color: string;
+    lineWidth: number;
 }
 
-interface IButtonProps {
-    tool: string;
-    currentTool: string;
-    onClick: (tool: string) => void;
-}
+const Container = styled.div`
+    display: flex;
+`;
 
-class Button extends React.PureComponent<IButtonProps> {
-    render() {
-        return (
-            <button 
-                style={this.props.tool === this.props.currentTool ? { border: "2px solid #000" } : undefined}
-                onClick={() => this.props.onClick(this.props.tool)}
-            >
-                {this.props.children}
-            </button>
-        );
-    }
-    
-};
+const ToolsBox = styled.div`
+    margin-left: 20px;
+`;
 
 class App extends React.Component<IAppProps, IAppState> {
     state = {
-        tool: "line"
+        tool: "line",
+        color: "#f44336",
+        lineWidth: 1,
     }
 
     onToolChange = (value: string) => {
@@ -41,22 +38,54 @@ class App extends React.Component<IAppProps, IAppState> {
         });
     }
 
+    onColorChange = (color: ColorResult) => {
+        this.setState({
+            color: color.hex
+        });
+    }
+
+    onLineWidthChange = (lineWidth: number) => {
+        this.setState({
+            lineWidth: lineWidth
+        });
+    }
+
     render() {
         return (
             <div>
-                <h1>Example:</h1>
+                <h1>react-simple-sketch example:</h1>
 
-                <SimpleSketch
-                    tool={this.state.tool}
-                />
+                <Container>
+                    <SimpleSketch
+                        tool={this.state.tool}
+                        lineColor={this.state.color}
+                        lineWidth={this.state.lineWidth}
+                        width={600}
+                        height={300}
+                        style={{
+                            border: "2px solid #000",
+                            borderRadius: "5px"
+                        }}
+                    />
 
-                <br/>
+                    <ToolsBox>
+                        <ToolButton onClick={this.onToolChange} tool="rect" currentTool={this.state.tool}/>>
+                        <ToolButton onClick={this.onToolChange} tool="line" currentTool={this.state.tool}/>
+                        <ToolButton onClick={this.onToolChange} tool="path" currentTool={this.state.tool}/>    
 
-                <Button onClick={this.onToolChange} tool="line" currentTool={this.state.tool}>Line</Button>
+                        <Slider 
+                            value={this.state.lineWidth} 
+                            onChange={this.onLineWidthChange} 
+                            min={1} 
+                            max={10}
+                            railStyle={{ background: "#ccc" }}
+                            trackStyle={[{ background: "#000" }]}
+                            handleStyle={[{ borderColor: "#000", boxShadow: "none" }]}
+                        />
 
-                <Button onClick={this.onToolChange} tool="rect" currentTool={this.state.tool}>Rect</Button>
-
-                <Button onClick={this.onToolChange} tool="path" currentTool={this.state.tool}>Pencil</Button>                
+                        <CirclePicker color={this.state.color} onChange={this.onColorChange} />  
+                    </ToolsBox>
+                </Container>   
             </div>            
         );
     }
