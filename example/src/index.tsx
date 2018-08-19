@@ -1,6 +1,6 @@
 import { render } from "react-dom";
 import * as React from "react";
-import SimpleSketch from "react-simple-sketch";
+import SimpleSketch, { ShapeObject } from "react-simple-sketch";
 import { CirclePicker, ColorResult } from "react-color";
 import { ToolButton } from "./ToolButton";
 import styled from "styled-components";
@@ -15,6 +15,7 @@ interface IAppState {
     tool: string
     color: string;
     lineWidth: number;
+    objects: ShapeObject[];
 }
 
 const Container = styled.div`
@@ -34,6 +35,7 @@ class App extends React.Component<IAppProps, IAppState> {
         tool: "path",
         color: "#f44336",
         lineWidth: 4,
+        objects: [],
     }
 
     onToolChange = (value: string) => {
@@ -54,6 +56,12 @@ class App extends React.Component<IAppProps, IAppState> {
         });
     }
 
+    onSketchBoardChange = (objects: ShapeObject[]) => {
+        this.setState({
+            objects
+        });
+    }
+
     render() {
         return (
             <div>
@@ -70,6 +78,8 @@ class App extends React.Component<IAppProps, IAppState> {
                             border: "2px solid #000",
                             borderRadius: "5px"
                         }}
+                        onChange={this.onSketchBoardChange}
+                        value={this.state.objects}
                     />
 
                     <ToolsBox>

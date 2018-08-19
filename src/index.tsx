@@ -1,17 +1,12 @@
 import * as React from "react";
 
-import { LineShape } from "./shapes/line";
 import { LineTool } from "./tools/line";
-
-import { RectShape } from "./shapes/rect";
 import { RectTool } from "./tools/rect";
-
-import { PathShape } from "./shapes/path";
 import { PathTool } from "./tools/path";
 
-import { DEFAULT_HEIGHT, DEFAULT_WIDTH, DEFAULT_LINE_WIDTH, DEFAULT_LINE_COLOR } from "./utils";
+import { ShapeObject } from "./shapes";
 
-type Object = LineShape | RectShape | PathShape;
+export { ShapeObject };
 
 export interface IReactSimpleSketchProps {
     width?: number;
@@ -20,6 +15,8 @@ export interface IReactSimpleSketchProps {
     lineWidth?: number;
     lineColor?: string;
     style?: React.CSSProperties;
+    value?: ShapeObject[];
+    onChange?: (objects: ShapeObject[]) => void; 
 }
 
 export interface IReactSimpleSketchState {
@@ -28,26 +25,29 @@ export interface IReactSimpleSketchState {
 export default class ReactSimpleSketch extends React.Component<IReactSimpleSketchProps, IReactSimpleSketchState> {
     canvas: HTMLCanvasElement | null = null;
     context: CanvasRenderingContext2D | null = null;
-    objects: Object[] = [];
-    lineTool = new LineTool(this.objects);
-    rectTool = new RectTool(this.objects);
-    pathTool = new PathTool(this.objects);
+    objects: ShapeObject[] = [];
+    lineTool = new LineTool(this);
+    rectTool = new RectTool(this);
+    pathTool = new PathTool(this);
     interval: NodeJS.Timer | undefined;
 
+    static defaultProps = {
+        lineWidth: 3,
+        lineColor: "#000",
+        width: 490,
+        height: 245,
+    };
 
     switchEventToTool = (e: MouseEvent | TouchEvent) => {
-        const lineWidth = this.props.lineWidth || DEFAULT_LINE_WIDTH;
-        const lineColor = this.props.lineColor || DEFAULT_LINE_COLOR;
-
         switch(this.props.tool) {
             case "line":
-                this.lineTool.draw(e, lineWidth, lineColor);
+                this.lineTool.draw(e);
                 break;
             case "rect":
-                this.rectTool.draw(e, lineWidth, lineColor);
+                this.rectTool.draw(e);
                 break;
             case "path":
-                this.pathTool.draw(e, lineWidth, lineColor);
+                this.pathTool.draw(e);
                 break;
         }       
     }
@@ -69,11 +69,17 @@ export default class ReactSimpleSketch extends React.Component<IReactSimpleSketc
         clearInterval(this.interval!);
     }
 
+    componentWillReceiveProps(props: IReactSimpleSketchProps) {
+        if (props.value !== undefined) {
+            this.objects = [...props.value];
+        }
+    }
+
     drawObjects = () => {
         if (!(this.context instanceof CanvasRenderingContext2D)) {
             return;
         }
-        this.context.clearRect(0, 0, (this.props.width || DEFAULT_WIDTH), (this.props.height || DEFAULT_HEIGHT));
+        this.context.clearRect(0, 0, this.props.width!, this.props.height!);
 
         for (let object of this.objects) {
             object.draw(this.context!);
@@ -92,8 +98,8 @@ export default class ReactSimpleSketch extends React.Component<IReactSimpleSketc
         return (
             <canvas 
                 ref={(c) => this.defineCanvas(c)}
-                height={this.props.height || DEFAULT_HEIGHT} 
-                width={this.props.width || DEFAULT_WIDTH}
+                height={this.props.height!} 
+                width={this.props.width!}
                 style={this.props.style || {}}
             />
         );

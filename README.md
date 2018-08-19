@@ -12,10 +12,20 @@ Run `yarn add react-simple-sketch` or `npm install react-simple-sketch`
 
 ### Use
 ```
-import SimpleSketch from "react-simple-sketch";
+import SimpleSketch, { ShapeObject } from "react-simple-sketch";
 
 <SimpleSketch
     tool={this.state.tool}
+    lineColor={this.state.color}
+    lineWidth={this.state.lineWidth}
+    width={600}
+    height={300}
+    style={{
+        border: "2px solid #000",
+        borderRadius: "5px"
+    }}
+    onChange={this.onSketchBoardChange}
+    value={this.state.objects}
 />
 ```
 
@@ -29,7 +39,8 @@ height | number | no
 lineWidth | number | no
 lineColor | string (hex) | no
 style | React.CSSProperties | no
-
+onChange | (objects: ShapeObject) => void | no
+value | ShapeObject[] | no
 
 ### Running example
 
@@ -40,5 +51,4 @@ yarn start
 
 ## Todo
 
-1. Make it controllable
 2. Mobile version
