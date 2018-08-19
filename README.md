@@ -24,6 +24,11 @@ import SimpleSketch from "react-simple-sketch";
 Property | Type | Required
 --- | --- | ---
 tool | "line" \| "rect" \| "path | yes
+width | number | no
+height | number | no
+lineWidth | number | no
+lineColor | string (hex) | no
+style | React.CSSProperties | no
 
 
 ### Running example
@@ -36,5 +41,3 @@ yarn start
 ## Todo
 
 1. Make it controllable
-2. Add color options
-3. Add size options
