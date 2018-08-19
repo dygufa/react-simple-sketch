@@ -18,8 +18,9 @@ interface IAppState {
     objects: ShapeObject[];
 }
 
-const Container = styled.div`
+const FlexContainer = styled.div`
     display: flex;
+    flex-wrap: wrap;
 `;
 
 const ToolsBox = styled.div`
@@ -67,7 +68,7 @@ class App extends React.Component<IAppProps, IAppState> {
             <div>
                 <h1>react-simple-sketch example:</h1>
 
-                <Container>
+                <FlexContainer>
                     <SimpleSketch
                         tool={this.state.tool}
                         lineColor={this.state.color}
@@ -76,7 +77,7 @@ class App extends React.Component<IAppProps, IAppState> {
                         height={300}
                         style={{
                             border: "2px solid #000",
-                            borderRadius: "5px"
+                            borderRadius: "5px",
                         }}
                         onChange={this.onSketchBoardChange}
                         value={this.state.objects}
@@ -105,7 +106,7 @@ class App extends React.Component<IAppProps, IAppState> {
                             <CirclePicker color={this.state.color} onChange={this.onColorChange} />  
                         </ToolBox>                        
                     </ToolsBox>
-                </Container>   
+                </FlexContainer>   
             </div>            
         );
     }

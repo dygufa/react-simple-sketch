@@ -79,7 +79,8 @@ export default class ReactSimpleSketch extends React.Component<IReactSimpleSketc
         if (!(this.context instanceof CanvasRenderingContext2D)) {
             return;
         }
-        this.context.clearRect(0, 0, this.props.width!, this.props.height!);
+    
+        this.context.clearRect(0, 0, this.canvas!.width, this.canvas!.height);
 
         for (let object of this.objects) {
             object.draw(this.context!);

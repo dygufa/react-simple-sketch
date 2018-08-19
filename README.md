@@ -51,4 +51,4 @@ yarn start
 
 ## Todo
 
-2. Mobile version
+2. Responsive version
