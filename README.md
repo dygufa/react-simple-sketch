@@ -41,3 +41,4 @@ yarn start
 ## Todo
 
 1. Make it controllable
+2. Mobile version
