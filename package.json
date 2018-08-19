@@ -1,6 +1,6 @@
 {
   "name": "react-simple-sketch",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "repository": "git@github.com:dygufa/react-simple-sketch.git",
