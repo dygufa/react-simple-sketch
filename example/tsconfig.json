@@ -8,6 +8,7 @@
         "jsx": "react",
         "experimentalDecorators": true,
         "baseUrl": ".",
+        "skipLibCheck": true,
         "paths": {
             "react-simple-sketch": [
                 "../src"
