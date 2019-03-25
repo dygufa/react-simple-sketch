@@ -26,5 +26,8 @@
     "typescript": "^3.0.1",
     "webpack": "^4.29.6",
     "webpack-dev-server": "^3.2.1"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.3.0"
   }
 }
