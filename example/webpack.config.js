@@ -16,7 +16,7 @@ module.exports = {
         extensions: [".tsx", ".ts", ".js"]
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.tsx?$/,
                 loader: "awesome-typescript-loader"
@@ -35,6 +35,9 @@ module.exports = {
                 ]
             }
         ]
+    },
+    devServer: {
+        port: 5000
     },
     plugins: [
         new HtmlWebpackPlugin({
