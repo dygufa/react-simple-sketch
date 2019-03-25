@@ -1,52 +1,76 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
-class ReactTextToInput extends React.Component {
-    constructor(props) {
-        super(props);
-        this.startEditing = () => {
-            this.setState({
-                editing: true,
-            });
-        };
-        this.onInputKeyPress = (e) => {
-            if (e.key === "Enter") {
-                this.setState({
-                    editing: false,
-                });
-                this.props.onChange(this.state.value);
+const line_1 = require("./tools/line");
+const rect_1 = require("./tools/rect");
+const path_1 = require("./tools/path");
+class ReactSimpleSketch extends React.Component {
+    constructor() {
+        super(...arguments);
+        this.canvas = null;
+        this.context = null;
+        this.objects = [];
+        this.lineTool = new line_1.LineTool(this);
+        this.rectTool = new rect_1.RectTool(this);
+        this.pathTool = new path_1.PathTool(this);
+        this.switchEventToTool = (e) => {
+            switch (this.props.tool) {
+                case "line":
+                    this.lineTool.draw(e);
+                    break;
+                case "rect":
+                    this.rectTool.draw(e);
+                    break;
+                case "path":
+                    this.pathTool.draw(e);
+                    break;
             }
         };
-        this.onInputChange = (e) => {
-            const value = e.target.value;
-            this.setState({
-                value,
-            });
+        this.drawObjects = () => {
+            if (!(this.context instanceof CanvasRenderingContext2D)) {
+                return;
+            }
+            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            for (let object of this.objects) {
+                object.draw(this.context);
+            }
         };
-        this.onInputBlur = () => {
-            this.setState({
-                editing: false,
-            });
-            this.props.onChange(this.state.value);
-        };
-        this.state = {
-            editing: false,
-            value: props.value,
+        this.defineCanvas = (canvas) => {
+            if (!canvas) {
+                return;
+            }
+            this.canvas = canvas;
+            this.context = canvas.getContext('2d');
         };
     }
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            value: nextProps.value,
-        });
+    componentDidMount() {
+        if (this.canvas) {
+            this.canvas.addEventListener('mousedown', this.switchEventToTool);
+            this.canvas.addEventListener('mousemove', this.switchEventToTool);
+            this.canvas.addEventListener('mouseup', this.switchEventToTool);
+            this.canvas.addEventListener('touchstart', this.switchEventToTool);
+            this.canvas.addEventListener('touchend', this.switchEventToTool);
+            this.canvas.addEventListener('touchmove', this.switchEventToTool);
+            this.interval = setInterval(this.drawObjects, 1000 / 30);
+        }
+    }
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+    componentWillReceiveProps(props) {
+        if (props.value !== undefined) {
+            this.objects = [...props.value];
+        }
     }
     render() {
-        if (this.state.editing) {
-            return React.createElement("input", Object.assign({ autoFocus: true, value: this.state.value, onChange: this.onInputChange, onKeyPress: this.onInputKeyPress, onBlur: this.onInputBlur, style: this.props.inputStyle, className: this.props.inputClassName }, this.props.inputProps));
-        }
-        return React.createElement("div", { className: this.props.textClassName, style: Object.assign({}, this.props.textStyle, {
-                minHeight: "20px"
-            }), onClick: this.startEditing }, this.props.value);
+        return (React.createElement("canvas", { ref: (c) => this.defineCanvas(c), height: this.props.height, width: this.props.width, style: this.props.style || {} }));
     }
 }
-exports.default = ReactTextToInput;
+ReactSimpleSketch.defaultProps = {
+    lineWidth: 3,
+    lineColor: "#000",
+    width: 490,
+    height: 245,
+};
+exports.default = ReactSimpleSketch;
 //# sourceMappingURL=index.js.map
