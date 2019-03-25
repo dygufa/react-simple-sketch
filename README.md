@@ -12,7 +12,7 @@ Run `yarn add react-simple-sketch` or `npm install react-simple-sketch`
 
 ### Use
 ```
-import SimpleSketch, { ShapeObject } from "react-simple-sketch";
+import SimpleSketch from "react-simple-sketch";
 
 <SimpleSketch
     tool={this.state.tool}
